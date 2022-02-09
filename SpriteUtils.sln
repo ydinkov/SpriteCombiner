@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteCombiner", "SpriteCombiner\SpriteCombiner.csproj", "{01165ABE-4CBC-47ED-9AC8-8AF20F35526D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01165ABE-4CBC-47ED-9AC8-8AF20F35526D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01165ABE-4CBC-47ED-9AC8-8AF20F35526D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01165ABE-4CBC-47ED-9AC8-8AF20F35526D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01165ABE-4CBC-47ED-9AC8-8AF20F35526D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
