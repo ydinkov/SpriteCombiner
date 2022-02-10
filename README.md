@@ -17,18 +17,27 @@ $"<FileName>_{xCoordinate}_{yCoordinate}.<filetype>";
 
 ### Download latest release >
 
-### Build from source
+### Build from source to a single file
 
 Download .net sdk, then run
 
 ```
-dotnet publish
+dotnet publish -r linux-x64 -p:PublishSingleFile=true --self-contained false --output <YOUR OUTPUT DIRECTORY>
 ```
-   
-## Copy exe into the directory of your images
+Navigate to your output directory and you will find `SpriteCombiner.exe`   
+## Running the application
 
-call
+First you need to copy `SpriteCombiner.exe` to the directory coning your sprites
+
+Then, run:
 ```
 SpriteCombiner.exe
 ```
-from your terminal
+
+If your images are same-sized and follow the naming convention, you should have a 'output.png' containing the combined sprite sheet.
+
+
+To customise input an doutput paths and filetypes, use:
+```
+SpriteCombiner.exe -h
+```
