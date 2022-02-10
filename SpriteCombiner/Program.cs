@@ -7,26 +7,26 @@ using SpriteCombiner;
 
 var rootCommand = new RootCommand
 {
-    //new Option<DirectoryInfo>(new[]{"-i","--input"},"Input directory"),
-    //new Option<FileInfo>(new[]{"-o","--output"},"Output file"),
-    //new Option<System.Drawing.Imaging.ImageFormat>(new[]{"-f","--format"},"The Image Format"),
+    new Option<DirectoryInfo>(new[]{"-i","--input"},GetCurrent,"Input directory"),
+    new Option<FileInfo>(new[]{"-o","--output"},()=>new FileInfo($"{GetCurrent().FullName}/output"),"Output file"),
+    new Option<EnumExtensions.EFileFormat>(new[]{"-f","--format"},()=>EnumExtensions.EFileFormat.Png,"The Image Format"),
 };
 
 rootCommand.SetHandler(
-    () =>
+    (DirectoryInfo directory, FileInfo outputFile, EnumExtensions.EFileFormat format) =>
     {
-        var format = System.Drawing.Imaging.ImageFormat.Png;
-        var workingDir = new DirectoryInfo(Directory.GetCurrentDirectory());
-        var outputPath = $"{workingDir.FullName}/output.{format.ToString().ToLower()}";
-        var file = new FileInfo(outputPath);
-        var files = workingDir.GetFiles().Where(x=>x.FullName.EndsWith("png")).ToArray();
+        var files = directory.GetFiles().Where(x=>x.FullName.EndsWith("png")).ToArray();
         var output = BetterImageCombination(files);
-        output.Save(file.FullName, format);
+        var outputFilePath = $"{outputFile.FullName.Split(".").First()}.{format.ToString().ToLower()}";
+        output.Save(outputFilePath, format.Format());
         output.Dispose();
-        Console.WriteLine("Done");
+        Console.WriteLine($"Done writing {outputFilePath.Split("/")}");
     });
 
 rootCommand.Invoke(args);
+
+
+DirectoryInfo GetCurrent() => new (Directory.GetCurrentDirectory());
 
 Bitmap BetterImageCombination(FileInfo[] files)
 {

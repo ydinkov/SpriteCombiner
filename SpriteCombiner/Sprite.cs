@@ -27,12 +27,9 @@ namespace SpriteCombiner
             Width = Image.Width;
             Height = Image.Height;
         }
-
         public void Dispose()
         {
             Image.Dispose();
         }
     }
-
-
 }
