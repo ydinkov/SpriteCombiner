@@ -8,6 +8,7 @@
         <LangVersion>latest</LangVersion>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <PlatformTarget>AnyCPU</PlatformTarget>
+        <VersionPrefix>0.1.0</VersionPrefix>
     </PropertyGroup>
 
     <ItemGroup>
