@@ -1,4 +1,4 @@
-name: Publish
+name: .NET
 
 on:
   push:
@@ -24,57 +24,35 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
         DEFAULT_BUMP: patch
-
-  release:
+  build:
     needs: bump_version_tag
-    name: Release
-    strategy:
-      matrix:
-        kind: ['linux', 'windows', 'macOS']
-        include:
-          - kind: linux
-            os: ubuntu-latest
-            target: linux-x64
-          - kind: windows
-            os: windows-latest
-            target: win-x64
-          - kind: macOS
-            os: macos-latest
-            target: osx-x64
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Setup dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
-
-      - name: Build
-        shell: bash
-        run: |
-          tag=$(git describe --tags --abbrev=0)
-          release_name="App-$tag-${{ matrix.target }}"
-
-          # Build everything
-          dotnet publish SpriteCombiner/SpriteCombiner.csproj  --runtime "${{ matrix.target }}" -c Release -o "$release_name"
-
-          # Pack files
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
-            # Pack to zip for Windows
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
-          else
-          tar czvf "${release_name}.tar.gz" "$release_name"
-          fi
-
-          # Delete output directory
-          rm -r "$release_name"
-
-      - name: Publish
-        uses: softprops/action-gh-release@v1
-        with:
-          tag: ${{github.ref_name}}
-          files: "App*"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+      
+    - name: Publish and zip
+      run: |
+          mkdir publish 
+          dotnet publish SpriteCombiner/SpriteCombiner.csproj -c Release -r win-x64 --no-restore -p:PublishReadyToRun=false -p:PublishSingleFile=true --self-contained true -o publish/headless
+          cp README.md publish 
+          cd publish
+          zip -r SpriteCombiner *
+          mv SpriteCombiner.zip ../
+    - name: Upload archive as release
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GH_PACKAGES_TOKEN }}
+        tag: ${{needs.bump_version_tag.outputs.new_tag}}
+        artifacts: 'SpriteCombiner.zip'
+        prerelease: false
