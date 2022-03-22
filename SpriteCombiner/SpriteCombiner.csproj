@@ -1,6 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <Title>SpriteCombiner</Title>
+
+        <Description>A Dotnet console application that creates spritesheets from seperate images</Description>
+        <Summary>Create spritesheets from seperate frames!</Summary>
+
+        <ProjectUrl>https://github.com/ydinkov/SpriteCombiner</ProjectUrl>
+        <RepositoryUrl>https://github.com/ydinkov/SpriteCombiner</RepositoryUrl>
+        <Authors>Yasen Dinkov</Authors>
+        <ApplicationIcon>spritecombiner.ico</ApplicationIcon>
+
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
