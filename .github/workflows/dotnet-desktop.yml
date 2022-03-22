@@ -24,8 +24,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
         DEFAULT_BUMP: patch
-        
+
   release:
+    needs: bump_version_tag
     name: Release
     strategy:
       matrix:
