@@ -55,6 +55,7 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
+          tag: ${{github.ref_name}}
           files: "App*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
