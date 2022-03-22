@@ -7,25 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-  bump_version_tag:
-    name: Bump version and push tag
-    runs-on: ubuntu-latest
-    outputs:
-      new_tag: ${{ steps.create_tag.outputs.new_tag }}
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: '0'
-    - name: Execute action anothrNick/github-tag-action
-      id: create_tag
-      uses: anothrNick/github-tag-action@1.26.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        WITH_V: true
-        DEFAULT_BUMP: patch
+  
   build:
-    needs: bump_version_tag
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -44,7 +27,6 @@ jobs:
     - name: Publish and zip
       run: |
           mkdir publish 
-          # dotnet publish SpriteCombiner/SpriteCombiner.csproj -c Release -r win-x64 --no-restore -p:PublishReadyToRun=false -p:PublishSingleFile=true --self-contained true -o publish/cli
           dotnet publish SpriteCombiner/SpriteCombiner.csproj -c Release -r win-x64 --no-restore -p:PublishReadyToRun=false -p:PublishSingleFile=true --self-contained true -o publish/headless
           cp README.md publish 
           cd publish
@@ -54,7 +36,6 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GH_PACKAGES_TOKEN }}
-        tag: ${{needs.bump_version_tag.outputs.new_tag}}
         artifacts: 'SpriteCombiner.zip'
         prerelease: false
 
