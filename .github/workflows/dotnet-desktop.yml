@@ -62,5 +62,6 @@ jobs:
         BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS  }}
         CHANNEL: windows
         ITCH_GAME: SpriteCombiner
-        ITCH_USER: ydinkov
+        ITCH_USER: nibblebit
         PACKAGE: build/windows
+        VERSION: ${{needs.bump_version_tag.outputs.new_tag}}
