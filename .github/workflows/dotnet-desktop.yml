@@ -56,3 +56,11 @@ jobs:
         tag: ${{needs.bump_version_tag.outputs.new_tag}}
         artifacts: 'SpriteCombiner.zip'
         prerelease: false
+    
+    - uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS  }}
+        CHANNEL: windows
+        ITCH_GAME: SpriteCombiner
+        ITCH_USER: ydinkov
+        PACKAGE: build/windows
